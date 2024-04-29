@@ -1,7 +1,7 @@
 class FileFormats {
     // Audio extensions
     static mp3 = '.mp3';
-    static mp4 = '.mp4';
+    static aac = '.aac';
     static flac = '.flac';
     static ogg = '.ogg';
     static m4a = '.m4a';
@@ -10,7 +10,7 @@ class FileFormats {
 
     static supportedAudioExtensions = [
         FileFormats.mp3,
-        FileFormats.mp4,
+        FileFormats.aac,
         FileFormats.flac,
         FileFormats.ogg,
         FileFormats.m4a,
