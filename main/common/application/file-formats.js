@@ -28,8 +28,16 @@ class FileFormats {
     static png = '.png';
     static jpg = '.jpg';
     static jpeg = '.jpeg';
+    static webp = '.webp';
+    static avif = ".avif";
 
-    static supportedPlaylistImageExtensions = [FileFormats.png, FileFormats.jpg, FileFormats.jpeg];
+    static supportedPlaylistImageExtensions = [
+        FileFormats.png,
+        FileFormats.jpg,
+        FileFormats.jpeg,
+        FileFormats.webp,
+        FileFormats.avif
+    ];
 }
 
 exports.FileFormats = FileFormats;
