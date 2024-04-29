@@ -1,68 +1,67 @@
 name: Nightly builds
 env:
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-on:
-    workflow_dispatch:
-    schedule:
-        - cron: '0 0 * * *'
+on: workflow_dispatch
 
 jobs:
-    nightly_build_on_linux:
-        runs-on: ubuntu-20.04
-        steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@master
-              with:
-                  node-version: '16.x'
-            - name: update package directory
-              run: sudo apt update
-            - name: install rpm and libarchive
-              run: sudo apt install rpm libarchive-tools
-            - name: install dependencies
-              run: npm install
-            - name: run unit tests
-              run: npm run test
-            - name: build
-              run: npm run electron:linux
-            - name: fetch current version
-              id: ver_name
-              uses: notiz-dev/github-action-json-property@release
-              with:
-                  path: 'package.json'
-                  prop_path: 'version'
-            - name: uploading rpm artifact
-              uses: actions/upload-artifact@v2
-              with:
-                  name: dopamine-nightly-rpm
-                  path: release/Dopamine-*.rpm
-            - name: upload deb artifact
-              uses: actions/upload-artifact@v2
-              with:
-                  name: dopamine-nightly-deb
-                  path: release/Dopamine-*.deb
-            - name: upload appimage artifact
-              uses: actions/upload-artifact@v2
-              with:
-                  name: dopamine-nightly-appimage
-                  path: release/Dopamine-*.AppImage
-            - name: upload snap artifact
-              uses: actions/upload-artifact@v2
-              with:
-                  name: dopamine-nightly-snap
-                  path: release/Dopamine-*.snap
-            - name: upload pacman artifact
-              uses: actions/upload-artifact@v2
-              with:
-                  name: dopamine-nightly-pacman
-                  path: release/Dopamine-*.pacman
+    # nightly_build_on_linux:
+    #     runs-on: ubuntu-20.04
+    #     steps:
+    #         - uses: actions/checkout@v2
+    #         - uses: actions/setup-node@master
+    #           with:
+    #               node-version: '16.x'
+    #         - name: update package directory
+    #           run: sudo apt update
+    #         - name: install rpm and libarchive
+    #           run: sudo apt install rpm libarchive-tools
+    #         - name: install dependencies
+    #           run: npm install
+    #         - name: run unit tests
+    #           run: npm run test
+    #         - name: build
+    #           run: npm run electron:linux
+    #         - name: fetch current version
+    #           id: ver_name
+    #           uses: notiz-dev/github-action-json-property@release
+    #           with:
+    #               path: 'package.json'
+    #               prop_path: 'version'
+    #         - name: uploading rpm artifact
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: dopamine-nightly-rpm
+    #               path: release/Dopamine-*.rpm
+    #         - name: upload deb artifact
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: dopamine-nightly-deb
+    #               path: release/Dopamine-*.deb
+    #         - name: upload appimage artifact
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: dopamine-nightly-appimage
+    #               path: release/Dopamine-*.AppImage
+    #         - name: upload snap artifact
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: dopamine-nightly-snap
+    #               path: release/Dopamine-*.snap
+    #         - name: upload pacman artifact
+    #           uses: actions/upload-artifact@v2
+    #           with:
+    #               name: dopamine-nightly-pacman
+    #               path: release/Dopamine-*.pacman
 
     nightly_build_on_mac:
-        runs-on: macos-12
+        runs-on: macos-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@master
+            - uses: actions/checkout@v4
               with:
-                  node-version: '16.x'
+                show-progress: false
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 18.x
             - name: install dependencies
               run: npm install
             - name: run unit tests
@@ -76,18 +75,21 @@ jobs:
                   path: 'package.json'
                   prop_path: 'version'
             - name: upload build artifacts
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
+                  compression-level: 9
                   name: dopamine-nightly-macos
                   path: release/Dopamine-*.dmg
 
     nightly_build_on_win:
-        runs-on: windows-2019
+        runs-on: windows-latest
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@master
+            - uses: actions/checkout@v4
               with:
-                  node-version: '16.x'
+                show-progress: false
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20.x
             - name: install dependencies
               run: npm install
             - name: run unit tests
@@ -101,7 +103,7 @@ jobs:
                   path: 'package.json'
                   prop_path: 'version'
             - name: upload build artifacts
-              uses: actions/upload-artifact@v2
+              uses: actions/upload-artifact@v4
               with:
                   name: dopamine-nightly-win
                   path: release\Dopamine-*.exe
